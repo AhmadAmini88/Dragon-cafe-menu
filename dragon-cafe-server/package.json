@@ -1,0 +1,9 @@
+{
+  "name": "dragon-cafe-order-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Backend مرکزی سفارش‌های QR برای Dragon Game Cafe",
+  "main": "server.js",
+  "scripts": {"start":"node server.js"},
+  "engines": {"node": ">=18"}
+}

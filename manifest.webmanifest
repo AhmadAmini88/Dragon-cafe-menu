@@ -1,0 +1,13 @@
+{
+  "name": "Dragon Game Café",
+  "short_name": "Dragon Café",
+  "description": "منوی دیجیتال و سفارش آنلاین کافه گیم دراگون",
+  "lang": "fa-IR",
+  "dir": "rtl",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#071426",
+  "theme_color": "#1597e5",
+  "icons": []
+}

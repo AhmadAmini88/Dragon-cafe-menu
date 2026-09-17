@@ -1,0 +1,157 @@
+ew','ثبت سفارش','fa-receipt'],['confirmed','تأیید سفارش','fa-check'],['preparing','آماده‌سازی','fa-fire'],['ready','آماده تحویل','fa-bell'],['served','تحویل شد','fa-flag-checkered']];
+            const rank=stages.findIndex(x=>x[0]===o.status);
+            box.innerHTML=`<div class="tracking-summary"><div class="tracking-head"><div><div class="tracking-id">${esc(o.id)}</div><div class="meta">میز: ${esc(o.table||'—')}</div></div><span class="order-status">${statusLabels[o.status]||o.status}</span></div><div style="font-size:12px;line-height:1.9;color:var(--text-dim)">${o.items.map(i=>`${esc(i.name)} × ${toFa(i.qty)}`).join('<br>')}</div><div style="font-weight:900;color:var(--gold)">${toFa(o.total)} تومان</div><div class="timeline">${stages.map((st,idx)=>`<div class="timeline-step ${idx<rank?'done':''} ${idx===rank?'active':''}"><div class="timeline-dot"><i class="fas ${st[2]}"></i></div><div><div class="timeline-title">${st[1]}</div><div class="timeline-time">${historyTime(o,st[0])}</div></div></div>`).join('')}</div></div>`;
+        }
+        document.getElementById('trackingClose').addEventListener('click',()=>document.getElementById('trackingBackdrop').classList.remove('open'));
+        document.getElementById('trackingBackdrop').addEventListener('click',e=>{if(e.target.id==='trackingBackdrop')document.getElementById('trackingBackdrop').classList.remove('open')});
+        document.getElementById('couponApplyBtn')?.addEventListener('click',applyCouponFromCart);document.getElementById('couponInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')applyCouponFromCart()});
+
+        // ==================== MESSAGES
+        let toastTimer;function showMessage(title,msg){const p=document.getElementById('messagePopup');if(!p)return;document.getElementById('messageTitle').textContent=title||'کافه گیم دراگون';document.getElementById('messageText').textContent=msg||'';p.classList.add('show')}function hideMessage(){document.getElementById('messagePopup')?.classList.remove('show')}function showToast(msg){showMessage('کافه گیم دراگون',msg)}document.getElementById('messageOk')?.addEventListener('click',hideMessage)
+
+        // ==================== SEARCH ====================
+        document.getElementById('searchToggle').addEventListener('click', () => {
+            document.getElementById('searchRow').classList.toggle('show');
+            document.getElementById('searchInput').focus();
+        });
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderItems();
+        });
+
+        // ==================== ADMIN ====================
+        document.getElementById('adminGear').addEventListener('click',()=>{if(adminMode){openIntegrationSettings();return}const b=document.getElementById('adminLoginBackdrop');document.getElementById('adminPinInput').value='';b.classList.add('open');setTimeout(()=>document.getElementById('adminPinInput').focus(),50)});
+        function tryAdminLogin(){const pin=document.getElementById('adminPinInput').value.trim();if(pin===getAdminPin()){document.getElementById('adminLoginBackdrop').classList.remove('open');enableAdmin();showMessage('خوش آمدید مدیر Dragon','مدیریت منو، محصولات، تخفیف‌ها، سفارش‌ها و تنظیمات کافه در اختیار شماست.')}else{showMessage('ورود مدیریت','رمز مدیریت اشتباه است.');document.getElementById('adminPinInput').select()}}
+        document.getElementById('adminLoginSubmit').addEventListener('click',tryAdminLogin);document.getElementById('adminPinInput').addEventListener('keydown',e=>{if(e.key==='Enter')tryAdminLogin()});document.getElementById('adminLoginClose').addEventListener('click',()=>document.getElementById('adminLoginBackdrop').classList.remove('open'));
+        function enableAdmin(){
+            adminMode=true; document.body.classList.add('admin-active');
+            document.getElementById('adminBanner').classList.add('show');
+            const b=document.getElementById('bottomBar');
+            b.classList.add('admin-mode');
+            b.innerHTML=`
+              <button class="bb-btn" onclick="openForm(null)"><i class="fas fa-plus"></i><span class="bb-label">افزودن آیتم</span></button>
+              <button class="bb-btn" onclick="openBrandManager()"><i class="fas fa-palette"></i><span class="bb-label">برند و لوگو</span></button>
+              <button class="bb-btn" onclick="openCatManager()"><i class="fas fa-images"></i><span class="bb-label">مدیریت منوها</span></button>
+              <button class="bb-btn" onclick="openDiscountManager()"><i class="fas fa-tags"></i><span class="bb-label">تخفیف‌ها</span></button>
+              <button class="bb-btn" onclick="openOrderManager()"><i class="fas fa-receipt"></i><span class="bb-label">سفارش‌ها</span></button>
+              <button class="bb-btn" onclick="openIntegrationSettings()"><i class="fas fa-cog"></i><span class="bb-label">تنظیمات</span></button>
+              <button class="bb-btn" onclick="exportUpdatedFile()"><i class="fas fa-download"></i><span class="bb-label">خروجی</span></button>
+              <button class="bb-btn" onclick="exitAdminMode()"><i class="fas fa-sign-out-alt"></i><span class="bb-label">خروج</span></button>`;
+            renderAll();
+        }
+        function exitAdminMode(){adminMode=false;resetBottomBar();renderAll();showToast('از پنل مدیریت خارج شدید')}
+        function resetBottomBar(){document.body.classList.remove('admin-active');const b=document.getElementById('bottomBar');b.classList.remove('admin-mode');b.innerHTML=`<button class="bb-btn" id="bottomCall"><i class="fas fa-phone"></i><span class="bb-label">تماس</span></button><button class="bb-btn cart-total" id="bottomCart"><i class="fas fa-shopping-bag"></i><span class="bb-label bb-cart-title">سبد خرید</span><span class="bb-cart-amount" id="bottomCartAmount"></span></button><button class="bb-btn" id="bottomTrack"><i class="fas fa-route"></i><span class="bb-label">پیگیری سفارش</span></button>`;document.getElementById('bottomCall')?.addEventListener('click',()=>location.href='tel:02100000000');bindBottomBar();updateCartUI()}
+
+        // ==================== ADMIN FORM ====================
+        function fillCatSelect() {
+            const sel = document.getElementById('fCat');
+            sel.innerHTML = CATS.filter(c => c.id !== 'featured').map(c =>
+                `<option value="${c.id}">${c.label}</option>`).join('');
+        }
+
+        function openForm(id) {
+            if (!adminMode) return;
+            fillCatSelect();
+            editingId = id;
+            const f = id ? ITEMS.find(x => x.id === id) : null;
+            document.getElementById('formTitle').textContent = f ? 'ویرایش آیتم' : 'افزودن آیتم';
+            document.getElementById('fCat').value = f ? f.cat : CATS[1].id;
+            document.getElementById('fName').value = f ? f.name : '';
+            document.getElementById('fDesc').value = f ? f.desc : '';
+            document.getElementById('fPrice').value = f ? f.price : '';
+            document.getElementById('fOldPrice').value = f && f.oldPrice ? f.oldPrice : '';
+            document.getElementById('fUnit').value = f && f.unit ? f.unit : '';
+            document.getElementById('fBadge').value = f && f.badge ? f.badge.c : '';
+            document.getElementById('fImage').value = f && f.img ? f.img : '';
+            document.getElementById('fFeatured').checked = !!(f && f.featured);
+            document.getElementById('fSoldout').checked = !!(f && f.soldout);
+            document.getElementById('fDelete').style.display = f ? 'block' : 'none';
+            document.getElementById('formBackdrop').classList.add('open');
+            syncAdminModalChrome?.();
+        }
+
+        function closeForm() {
+            document.getElementById('formBackdrop').classList.remove('open');
+        }
+        document.getElementById('formBackdrop').addEventListener('click', (e) => { if (e.target.id === 'formBackdrop')
+                closeForm(); });
+
+        document.getElementById('fSave').addEventListener('click', async () => {
+            const name = document.getElementById('fName').value.trim();
+            const price = Number(document.getElementById('fPrice').value);
+            if (!name || !price) { alert('نام و قیمت الزامی است.'); return; }
+            const cat = document.getElementById('fCat').value;
+            const desc = document.getElementById('fDesc').value.trim();
+            const oldPrice = Number(document.getElementById('fOldPrice').value) || undefined;
+            const unit = document.getElementById('fUnit').value.trim() || undefined;
+            const badgeC = document.getElementById('fBadge').value;
+            const badge = badgeC ? { t: badgeC === 'new' ? 'جدید' : (badgeC === 'hot' ? 'داغ' : 'ویژه'), c: badgeC } : undefined;
+            let img = document.getElementById('fImage').value.trim() || undefined;
+            const file = document.getElementById('fImageFile').files && document.getElementById('fImageFile').files[0];
+            if(file){ try{ img=await compressImage(file,1400,.84); }catch(e){alert('تصویر انتخابی خوانده نشد.'); return;} }
+            const featured=document.getElementById('fFeatured').checked, soldout=document.getElementById('fSoldout').checked;
+            if(editingId){
+              const it=ITEMS.find(x=>x.id===editingId); Object.assign(it,{cat,name,desc,price,oldPrice,unit,badge,featured,soldout});
+              if(img) it.img=img; else delete it.img; if(!oldPrice)delete it.oldPrice; if(!unit)delete it.unit; if(!badge)delete it.badge;
+            }else{ const newId=Math.max(0,...ITEMS.map(i=>i.id))+1; ITEMS.push({id:newId,cat,name,desc,price,oldPrice,unit,badge,featured,soldout,img}); }
+            closeForm(); renderAll(); saveData(); showToast('محصول ذخیره شد');
+        });
+
+        function bindFileName(inputId,labelId){const i=document.getElementById(inputId),l=document.getElementById(labelId);if(!i||!l)return;if(!i.dataset.filenameBound){i.addEventListener('change',()=>{l.textContent=i.files&&i.files[0]?i.files[0].name:'فایلی انتخاب نشده است';});i.dataset.filenameBound='1';}}
+        bindFileName('fImageFile','fImageFileName');
+        bindFileName('brandLogoFile','brandLogoFileName');
+
+        function compressImage(file,maxSide=1400,quality=.84){return new Promise((resolve,reject)=>{if(!file||!file.type.startsWith('image/'))return reject(new Error('image'));const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{let w=im.naturalWidth,h=im.naturalHeight,s=Math.min(1,maxSide/Math.max(w,h));w=Math.round(w*s);h=Math.round(h*s);const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(im,0,0,w,h);resolve(c.toDataURL('image/jpeg',quality));};im.onerror=reject;im.src=fr.result;};fr.onerror=reject;fr.readAsDataURL(file);});}
+
+        document.getElementById('fDelete').addEventListener('click', () => {
+            if (editingId) deleteItem(editingId);
+            closeForm();
+        });
+
+        function deleteItem(id) {
+            if (!confirm('این آیتم حذف بشه؟')) return;
+            ITEMS = ITEMS.filter(i => i.id !== id);
+            renderAll();
+            saveData();
+        }
+
+
+        function openCatManager(){if(!adminMode)return;const w=document.getElementById('catManagerList');w.innerHTML=CATS.map(c=>`<div class="cat-manager-row"><div class="cat-manager-preview" data-preview="${c.id}">${CUSTOM_CAT_IMAGES[c.id]?`<img src="${CUSTOM_CAT_IMAGES[c.id]}" alt="">`:visualForCat(c)}</div><div><strong>${esc(c.label)}</strong><div class="file-field" style="margin-top:8px"><label class="file-btn"><i class="fas fa-cloud-upload-alt"></i><span>انتخاب تصویر</span><input type="file" accept="image/*" data-cat-file="${c.id}" aria-label="انتخاب تصویر دسته ${esc(c.label)}"></label><span class="file-name" data-file-name="${c.id}">${CUSTOM_CAT_IMAGES[c.id]?'تصویر ذخیره‌شده':'فایلی انتخاب نشده است'}</span></div></div></div>`).join('');w.querySelectorAll('[data-cat-file]').forEach(inp=>inp.addEventListener('change',async e=>{const f=e.target.files?.[0];const id=e.target.dataset.catFile;const label=w.querySelector(`[data-file-name="${id}"]`);if(!f)return;if(label)label.textContent=f.name;try{const d=await compressImage(f,1000,.84);CUSTOM_CAT_IMAGES[id]=d;w.querySelector(`[data-preview="${id}"]`).innerHTML=`<img src="${d}" alt="">`;}catch(_){if(label)label.textContent='تصویر خوانده نشد';alert('تصویر خوانده نشد.')}}));document.getElementById('catManagerBackdrop').classList.add('open');syncAdminModalChrome?.()}
+        function closeCatManager(){document.getElementById('catManagerBackdrop').classList.remove('open')}
+        function saveCatManager(){saveData();closeCatManager();renderAll();showToast('تصاویر دسته‌ها ذخیره شد')}
+
+        function applyTheme(theme){
+            const t=theme||CAFE_SETTINGS.theme||'blue';
+            const themes={
+                blue:{blue:'#4fb3ff',indigo:'#7c6cff',cyan:'#57e0e0',sale:'#61f3ff',old:'#ff9898',bg:'#050b1b',surface:'rgba(10,24,52,.62)'},
+                neon:{blue:'#00e5ff',indigo:'#0050ff',cyan:'#2dffb9',sale:'#2dffb9',old:'#ff948d',bg:'#050b18',surface:'rgba(7,26,47,.66)'},
+                midnight:{blue:'#3c8ce7',indigo:'#2563eb',cyan:'#25e9c9',sale:'#25e9c9',old:'#ff9a8f',bg:'#040914',surface:'rgba(7,20,42,.68)'},
+                cyan:{blue:'#35d8d8',indigo:'#2377ff',cyan:'#57e0e0',sale:'#6fffe8',old:'#ff9b9b',bg:'#031116',surface:'rgba(5,35,44,.68)'},
+                purple:{blue:'#a66cff',indigo:'#ff63c8',cyan:'#7fe7ff',sale:'#b9f3ff',old:'#ff9bbb',bg:'#0a0717',surface:'rgba(30,12,54,.64)'}
+            };
+            const v=themes[t]||themes.blue;
+            for(const [k,val] of Object.entries(v)) document.documentElement.style.setProperty('--'+k,val);
+            document.documentElement.style.setProperty('--theme-bg',v.bg);
+            document.documentElement.style.setProperty('--theme-surface',v.surface);
+            CAFE_SETTINGS.theme=themes[t]?t:'blue';
+            document.querySelectorAll('[data-theme-choice]').forEach(b=>b.classList.toggle('active',b.dataset.themeChoice===CAFE_SETTINGS.theme));
+        }
+        function applyTextColors(main,muted){
+            const text=(main||CAFE_SETTINGS.textColor||'#f3f7ff').toUpperCase();
+            const dim=(muted||CAFE_SETTINGS.textMutedColor||'#9fb3d9').toUpperCase();
+            document.documentElement.style.setProperty('--text',text);
+            document.documentElement.style.setProperty('--text-dim',dim);
+            const a=document.getElementById('themeTextColor'), b=document.getElementById('themeMutedColor');
+            const av=document.getElementById('themeTextColorValue'), bv=document.getElementById('themeMutedColorValue');
+            if(a)a.value=text; if(b)b.value=dim; if(av)av.textContent=text; if(bv)bv.textContent=dim;
+            CAFE_SETTINGS.textColor=text; CAFE_SETTINGS.textMutedColor=dim;
+        }
+        function resetToMasterPin(){setAdminPin(MASTER_ADMIN_PIN);document.getElementById('newAdminPin').value='';showMessage('رمز مدیریت','رمز مادر فعال شد.')}
+        document.querySelectorAll('[data-theme-choice]').forEach(b=>b.addEventListener('click',()=>{applyTheme(b.dataset.themeChoice);saveCafeSettings()}));
+        ['themeTextColor','themeMutedColor'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.dataset.bound){el.dataset.bound='1';el.addEventListener('input',()=>{if(id==='themeTextColor')applyTextColors(el.value,CAFE_SETTINGS.textMutedColor);else applyTextColors(CAFE_SETTINGS.textColor,el.value);});}});
+        function applyCafeBrand(){
+            const name=CAFE_SETTINGS.brandName||'کافه گیم دراگون';
+            const sub=CAFE_SETTINGS.brandSubtitle||'به منوی دیجیتال گیم‌کافه اژدها خوش آمدید';
+            const logoSource=(typeof CAFE_SETTINGS.logoData==='string'&&/^data:image\//.test(CAFE_SETTINGS.logoData))?CAFE_SETTINGS.logoData:DRAGON_LOGO_DATA_URL;
+            const bt=document.getElementById('brandText');if(bt)bt.textContent=name;
+            const bp=document.getElementById('brandLogoBox');if(bp){bp.innerHTML=`<img src="${logoSource}" alt="لوگو" style="width:100%;height:100%;object-fit:contain;padding:2px">`}

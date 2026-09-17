@@ -18,7 +18,7 @@
   const css=await fetch('./release/v7/patch.css',{cache:'no-store'}).then(r=>r.text());
   const js=await fetch('./release/v7/patch.js',{cache:'no-store'}).then(r=>r.text());
   html=html.replace('</head>',`<style id="dragon-v7-external-patch">${css}</style></head>`);
-  html=html.replace('</body>',`<script>${js}</script></body>`);
+  html=html.replace('</body>',`<script>${js}<\\/script></body>`);
   document.open();document.write(html);document.close();
  }catch(e){document.getElementById('loader').innerHTML='<div class="loader-card"><strong>کافه گیم دراگون</strong><span>بارگذاری منو انجام نشد. اتصال به GitHub Pages را بررسی کنید.</span></div>';console.error(e)}
 })();

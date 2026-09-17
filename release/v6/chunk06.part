@@ -1,0 +1,354 @@
+faces — the selected theme now changes the whole visual system, not only accents. */
+html,body{background:var(--theme-bg)!important}
+body{
+  background:
+    radial-gradient(ellipse 90% 62% at 84% 8%, color-mix(in srgb,var(--blue) 22%,transparent), transparent 62%),
+    radial-gradient(ellipse 86% 68% at 12% 92%, color-mix(in srgb,var(--indigo) 19%,transparent), transparent 64%),
+    radial-gradient(circle at 48% 48%, color-mix(in srgb,var(--cyan) 7%,transparent), transparent 42%),
+    var(--theme-bg)!important;
+}
+.toolbar,.search-row input,.cat-heading,.bottom-bar,.modal,.admin-banner,.admin-settings-card,.password-change-card,
+.coupon-premium,.theme-colors-panel,.color-control,.admin-section-nav{
+  border-color:var(--theme-border)!important;
+}
+.sidebar{background:linear-gradient(180deg,color-mix(in srgb,var(--theme-surface) 88%,transparent),color-mix(in srgb,var(--theme-bg) 82%,transparent))!important}
+.item-card,.modal,.bottom-bar,.toolbar,.admin-section-nav{box-shadow:0 18px 45px color-mix(in srgb,var(--blue) 7%,black)!important}
+
+/* Featured header: no overflow on the left-side "قیمت‌ها به تومان" note. */
+.cat-heading{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-width:0!important;
+  width:100%!important;
+  padding:16px max(9px,2vw) 8px!important;
+  overflow:hidden!important;
+}
+.cat-heading .em{flex:0 0 auto!important;line-height:1!important}
+.cat-heading-main{
+  flex:1 1 auto!important;
+  min-width:0!important;
+  width:auto!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  overflow:hidden!important;
+}
+.cat-heading-main h1{
+  flex:0 1 auto!important;
+  min-width:0!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.cat-heading-main .dash{flex:1 1 26px!important;min-width:12px!important;height:2px!important}
+.cat-heading .sub{
+  flex:0 0 clamp(74px,25vw,148px)!important;
+  width:clamp(74px,25vw,148px)!important;
+  min-width:0!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:5px 6px!important;
+  border-radius:11px!important;
+  border:1px solid color-mix(in srgb,var(--blue) 22%,transparent)!important;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--blue) 10%,transparent),color-mix(in srgb,var(--indigo) 7%,transparent))!important;
+  text-align:center!important;
+  direction:rtl!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  line-height:1.25!important;
+  font-size:clamp(8px,2.3vw,11px)!important;
+  font-weight:800!important;
+  box-sizing:border-box!important;
+}
+
+/* Premium product price card. Larger like the quantity control, but safely fluid. */
+.item-foot{gap:8px!important;min-width:0!important}
+.price-wrap{
+  flex:1 1 auto!important;
+  min-width:112px!important;
+  max-width:calc(100% - 58px)!important;
+  min-height:58px!important;
+  padding:8px 12px!important;
+  border-radius:17px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  gap:3px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  background:
+    linear-gradient(145deg,color-mix(in srgb,var(--sale) 12%,transparent),color-mix(in srgb,var(--blue) 8%,transparent))!important;
+  border:1px solid color-mix(in srgb,var(--sale) 28%,transparent)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 14px 32px color-mix(in srgb,var(--blue) 10%,transparent)!important;
+  backdrop-filter:blur(15px)!important;
+  -webkit-backdrop-filter:blur(15px)!important;
+}
+.price-wrap .old-price{
+  width:100%!important;
+  text-align:right!important;
+  color:var(--old)!important;
+  font-size:clamp(9px,1.3vw,12px)!important;
+  font-weight:850!important;
+  line-height:1.1!important;
+  text-decoration:line-through!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.price-wrap .price{
+  width:100%!important;
+  text-align:right!important;
+  color:var(--sale)!important;
+  font-size:clamp(20px,3vw,27px)!important;
+  font-weight:950!important;
+  line-height:1.05!important;
+  letter-spacing:0!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  text-shadow:0 0 18px color-mix(in srgb,var(--sale) 40%,transparent)!important;
+}
+.price-wrap .price .unit{
+  color:var(--text)!important;
+  opacity:.84!important;
+  font-size:clamp(9px,1.2vw,12px)!important;
+  font-weight:850!important;
+  white-space:nowrap!important;
+}
+
+/* File name field centered and safe on all widths. */
+.file-field{min-width:0!important;width:100%!important}
+.file-name{
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-height:38px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  direction:rtl!important;
+  line-height:1.45!important;
+  padding:8px 10px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  box-sizing:border-box!important;
+}
+
+/* Admin modal: bottom admin bar disappears while any management sheet is open. */
+.modal-backdrop.open{z-index:500!important}
+.modal{max-height:min(92vh,900px)!important;overflow:hidden!important}
+.modal-body{max-height:calc(min(92vh,900px) - 2px)!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain!important}
+.admin-section-nav{
+  position:sticky!important;
+  top:0!important;
+  z-index:800!important;
+  margin:-2px 0 14px!important;
+  isolation:isolate!important;
+}
+body.admin-modal-open #bottomBar.admin-mode,
+body:has(.modal-backdrop.open) #bottomBar.admin-mode{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+@media(max-width:720px){
+  .cat-heading{gap:6px!important;padding:12px 8px 7px!important}
+  .cat-heading .sub{flex-basis:clamp(76px,27vw,112px)!important;width:clamp(76px,27vw,112px)!important;font-size:8px!important;padding:4px 5px!important}
+  .cat-heading-main{gap:6px!important}
+  .cat-heading-main h1{font-size:16px!important}
+  .price-wrap{min-width:108px!important;max-width:calc(100% - 52px)!important;min-height:56px!important;padding:7px 10px!important;border-radius:16px!important}
+  .price-wrap .price{font-size:clamp(19px,5.2vw,23px)!important}
+  .price-wrap .old-price{font-size:9.5px!important}
+  .price-wrap .price .unit{font-size:8px!important}
+  .admin-section-nav{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;padding:7px!important}
+}
+@media(max-width:380px){
+  .cat-heading .sub{flex-basis:72px!important;width:72px!important;font-size:7px!important}
+  .cat-heading-main h1{font-size:15px!important}
+  .price-wrap{min-width:100px!important;min-height:54px!important;padding:6px 8px!important}
+  .price-wrap .price{font-size:18px!important}
+  .price-wrap .old-price{font-size:8.5px!important}
+  .price-wrap .price .unit{font-size:7px!important}
+}
+
+/* Strong image fallback: the Dragon logo is the universal placeholder. */
+.photo-fallback,.cat-logo-fallback,.brand-preview,.login-dragon,.welcome-popup .popup-box .dragon-icon,.message-logo{background:
+  radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--blue) 13%,transparent),transparent 68%),
+  linear-gradient(145deg,color-mix(in srgb,var(--blue) 8%,transparent),color-mix(in srgb,var(--indigo) 7%,transparent))!important}
+.site-logo-fallback{filter:drop-shadow(0 10px 28px color-mix(in srgb,var(--blue) 28%,transparent))!important}
+
+/* Theme cards reflect the richer V6 palette. */
+.theme-choice.active{background:linear-gradient(145deg,color-mix(in srgb,var(--blue) 13%,transparent),color-mix(in srgb,var(--indigo) 10%,transparent))!important}
+</style>
+
+</head>
+<body>
+
+    <!-- ========== DRAGON WELCOME ========== -->
+    <div class="welcome-popup" id="welcomePopup">
+        <div class="popup-box">
+            <span class="dragon-icon" id="welcomeLogoBox" aria-label="لوگوی Dragon"><img src="data:," alt="لوگوی Dragon"></span>
+            <h2 id="welcomeTitle">کافه گیم دراگون</h2>
+            <p id="welcomeText">به دنیای Dragon خوش آمدید<br><span class="welcome-sub">بازی، قهوه و یک تجربه متفاوت</span></p>
+            <div class="welcome-line"></div>
+        </div>
+    </div>
+    <div class="message-popup" id="messagePopup" aria-live="polite">
+      <div class="message-box" role="dialog" aria-modal="true">
+        <div class="message-logo" id="messageLogo"><img src="data:," alt="لوگوی Dragon"></div>
+        <h3 id="messageTitle">کافه گیم دراگون</h3>
+        <p id="messageText"></p>
+        <div class="message-line"></div>
+        <button class="message-ok" id="messageOk" type="button">متوجه شدم</button>
+      </div>
+    </div>
+
+    <!-- ========== SIDEBAR ========== -->
+    <div class="sidebar" id="sidebar"></div>
+
+    <!-- ========== MAIN ========== -->
+    <div class="main">
+
+        <!-- toolbar -->
+        <div class="toolbar">
+            <div class="icons">
+                <button class="icon-btn" id="adminGear" title="پنل مدیریت / تنظیمات"><i class="fas fa-cog"></i></button>
+                <button class="icon-btn" id="cartIconBtn" title="سبد خرید">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="count" id="cartCount">0</span>
+                </button>
+                <button class="icon-btn" id="searchToggle" title="جستجو"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="brand-pill">
+                <div class="logo" id="brandLogoBox" aria-label="لوگوی Dragon"><img src="data:," alt="لوگوی Dragon"></div>
+                <span class="brand-text" id="brandText">کافه گیم دراگون</span>
+            </div>
+        </div>
+
+        <!-- admin banner -->
+        <div class="admin-banner" id="adminBanner">
+            <i class="fas fa-shield-alt" style="margin-left:8px;"></i>
+            حالت مدیریت فعال — روی هر آیتم ✎ یا 🗑 بزنید، یا ➕ جدید اضافه کنید.
+            پس از تغییرات «دانلود نسخه به‌روز» رو بزنید.
+        </div>
+
+        <!-- search -->
+        <div class="search-row" id="searchRow">
+            <input id="searchInput" type="text" placeholder="جستجو در منو ...">
+        </div>
+
+        <!-- heading -->
+        <div class="cat-heading">
+            <span class="em" id="catEm">⭐</span>
+            <div class="cat-heading-main">
+                <h1 id="catTitle">پیشنهاد ویژه</h1>
+                <div class="dash"></div>
+            </div>
+            <span class="sub">قیمت به تومان</span>
+        </div>
+
+        <!-- items -->
+        <div class="items" id="itemsWrap"></div>
+    </div>
+
+    <!-- bottom bar -->
+    <div class="bottom-bar" id="bottomBar">
+        <button class="bb-btn" id="bottomCall"><i class="fas fa-phone"></i><span class="bb-label">تماس</span></button>
+        <button class="bb-btn cart-total" id="bottomCart"><i class="fas fa-shopping-bag"></i><span class="bb-label bb-cart-title">سبد خرید</span><span class="bb-cart-amount" id="bottomCartAmount"></span></button>
+        <button class="bb-btn" id="bottomTrack"><i class="fas fa-route"></i><span class="bb-label">پیگیری سفارش</span></button>
+    </div>
+
+    <!-- ========== MODALS ========== -->
+
+    <!-- item detail -->
+    <div class="modal-backdrop" id="modalBackdrop">
+        <div class="modal">
+            <div class="modal-hero" id="modalHero">
+                <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+                <div class="overlay"></div>
+                <span class="center-emoji" id="modalEmoji">☕</span>
+            </div>
+            <div class="modal-body">
+                <h2 id="modalName"></h2>
+                <div class="divider"></div>
+                <p class="desc" id="modalDesc"></p>
+                <div class="modal-foot">
+                    <div class="price-wrap">
+                        <span class="old-price" id="modalOld" style="display:none;"></span>
+                        <span class="price" id="modalPrice"></span>
+                    </div>
+                    <div id="modalQtyArea"><button class="modal-add" id="modalAdd"><i class="fas fa-plus"></i> افزودن</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- cart modal -->
+    <div class="modal-backdrop" id="cartBackdrop">
+        <div class="modal">
+            <div class="modal-body">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                    <h2 style="font-size:18px;"><i class="fas fa-shopping-bag" style="margin-left:10px;"></i>سبد خرید</h2>
+                    <button class="modal-close" id="cartClose" style="position:static;width:34px;height:34px;background:var(--glass);border:1px solid var(--border);"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="divider"></div>
+                <div id="cartItems"></div>
+                <div class="coupon-premium">
+                  <div class="coupon-premium-head"><div class="coupon-premium-title"><i class="fas fa-ticket-alt"></i>کد تخفیف داری؟</div><span class="coupon-premium-badge">DRAGON DEAL</span></div>
+                  <div class="coupon-entry"><div class="coupon-input-wrap"><i class="fas fa-ticket-alt ticket-icon"></i><input id="couponInput" type="text" placeholder="کد تخفیف را وارد کنید" autocomplete="off"></div><button class="btn btn-save coupon-apply" id="couponApplyBtn" type="button">اعمال</button></div>
+                  <div class="coupon-result" id="couponResult"></div>
+                </div>
+                <div style="margin-top:20px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:16px;border-top:1px solid var(--border);padding-top:16px;">
+                    <span>جمع کل</span>
+                    <span style="color:var(--gold);" id="cartTotalPrice">۰ تومان</span>
+                </div>
+                <button class="modal-add" id="cartCheckout" style="width:100%;margin-top:18px;justify-content:center;display:flex;gap:8px;">
+                    <i class="fas fa-check"></i> ثبت سفارش
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- admin form -->
+    <div class="modal-backdrop" id="formBackdrop">
+        <div class="modal">
+            <div class="modal-body">
+                <div class="modal-headline">
+                    <h2 id="formTitle">افزودن آیتم</h2>
+                    <button class="modal-close static" type="button" onclick="closeForm()" aria-label="بستن"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="divider"></div>
+                <div class="form-grid">
+                    <div>
+                        <label>دسته</label>
+                        <select id="fCat"></select>
+                    </div>
+                    <div>
+                        <label>نام آیتم</label>
+                        <input id="fName" type="text" placeholder="مثلاً لاته وانیل">
+                    </div>
+                    <div>
+                        <label>توضیح کوتاه</label>
+                        <textarea id="fDesc" placeholder="توضیح آیتم"></textarea>
+                    </div>
+                    <div class="form-row2">
+                        <div>
+                            <label>قیمت (تومان)</label>
+                            <input id="fPrice" type="number" placeholder="65000">
+                        </div>
+                        <div>
+                            <label>قیمت قبل تخفیف</label>
+                            <input id="fOldPrice" type="number" placeholder="75000">
+                        </div>
+                    </div>
+                    <div class="form-row2">
+                        <div>
+                            <label>واحد (اختیاری)</label>
+                            <input id="fUnit" type="

@@ -1,20 +1,32 @@
 (function(){
-  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 364"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#70efff"/><stop offset=".55" stop-color="#4fb3ff"/><stop offset="1" stop-color="#7c6cff"/></linearGradient></defs><rect width="400" height="364" rx="54" fill="#071225"/><circle cx="200" cy="150" r="108" fill="none" stroke="url(#g)" stroke-width="12" opacity=".9"/><path d="M112 205c-20-43-10-91 31-117 34-22 74-25 107-9 25 12 46 37 51 65-19-18-39-27-60-28 12 17 14 36 5 54-9-17-22-27-39-31 5 22-1 42-18 57-17-18-39-28-63-30-3 13-8 26-14 39z" fill="none" stroke="url(#g)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><path d="M245 130l25-18-5 28 25-3-18 18 20 13-28 2-12 25-11-25" fill="url(#g)"/><circle cx="259" cy="129" r="4" fill="#fff"/><rect x="139" y="176" width="122" height="62" rx="22" fill="#eaf6ff" opacity=".95"/><path d="M161 193h78M161 216h78" stroke="#2a4f87" stroke-width="7" stroke-linecap="round"/><text x="200" y="289" text-anchor="middle" font-family="Arial,sans-serif" font-size="43" font-weight="900" fill="#fff">DRAGON</text><text x="200" y="327" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#70efff">CAFE GAME</text></svg>`;
-  const LOGO='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
-  function patchImages(root=document){
-    root.querySelectorAll('img').forEach(img=>{
-      const src=img.getAttribute('src')||'';
-      if(!src || src==='data:,' || src.includes('dragon_logo.webp') || src.includes('./images/dragon_logo.svg')) img.src=LOGO;
-      if(!img.dataset.logoFallbackBound){
-        img.addEventListener('error',function(){
-          if(this.dataset.logoFallback==='1') return;
-          this.dataset.logoFallback='1'; this.onerror=null; this.src=LOGO;
-        });
-        img.dataset.logoFallbackBound='1';
-      }
-    });
-  }
   document.title='کافه گیم دراگون | منوی دیجیتال';
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(patchImages,50));
-  new MutationObserver(()=>patchImages()).observe(document.documentElement,{subtree:true,childList:true});
+  const IMG={
+    hot:['https://images.unsplash.com/photo-1546123291-b784739f020f?auto=format&fit=crop&w=1200&q=85','https://images.unsplash.com/photo-1564327367919-cb377ea6a88f?auto=format&fit=crop&w=1200&q=85','https://images.unsplash.com/photo-1741321728571-e62467b671de?auto=format&fit=crop&w=1200&q=85'],
+    cold:['https://images.unsplash.com/photo-1775717427643-2b0fc39a81f8?auto=format&fit=crop&w=1200&q=85','https://images.unsplash.com/photo-1560536914-61692ef17082?auto=format&fit=crop&w=1200&q=85'],
+    snacks:['https://images.unsplash.com/photo-1529259266118-cf22737f713f?auto=format&fit=crop&w=1200&q=85','https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=1200&q=85','https://images.unsplash.com/photo-1564849012987-56a988d14596?auto=format&fit=crop&w=1200&q=85'],
+    ps5:'https://images.unsplash.com/photo-1752262526779-bd65a9b83c25?auto=format&fit=crop&w=1400&q=85',
+    pc:'https://images.unsplash.com/photo-1783783197323-31f5291db6f7?auto=format&fit=crop&w=1400&q=85',
+    xbox:'https://images.unsplash.com/photo-1543973277-5020ef836640?auto=format&fit=crop&w=1400&q=85',
+    vr:'https://images.unsplash.com/photo-1745953129750-9c1874b4ffa1?auto=format&fit=crop&w=1400&q=85'
+  };
+  const ITEM={1:IMG.hot[0],2:IMG.hot[1],3:IMG.hot[2],4:IMG.hot[1],5:IMG.cold[0],6:IMG.cold[1],7:IMG.cold[1],8:IMG.cold[0],9:IMG.snacks[0],10:IMG.snacks[0],11:IMG.snacks[1],12:IMG.snacks[2],13:IMG.ps5,14:IMG.ps5,15:IMG.pc,16:IMG.pc,17:IMG.xbox,18:IMG.vr,19:IMG.ps5,20:IMG.pc};
+  const CAT={featured:IMG.ps5,hot:IMG.hot[0],cold:IMG.cold[0],snacks:IMG.snacks[0],ps5:IMG.ps5,pc:IMG.pc,xbox:IMG.xbox,vr:IMG.vr,combo:IMG.ps5};
+  function apply(){
+    try{
+      if(typeof ITEMS!=='undefined'&&Array.isArray(ITEMS)){
+        ITEMS.forEach(i=>{if(!i.img||String(i.img).includes('dragon_logo')||String(i.img).includes('site-logo-fallback')) i.img=ITEM[i.id]||CAT[i.cat]||CAT.featured;});
+        if(typeof saveData==='function') saveData();
+      }
+      if(typeof CUSTOM_CAT_IMAGES!=='undefined') Object.keys(CAT).forEach(k=>{if(!CUSTOM_CAT_IMAGES[k]) CUSTOM_CAT_IMAGES[k]=CAT[k];});
+      document.querySelectorAll('.admin-section-nav').forEach(n=>n.remove());
+      const footer=document.querySelector('#integrationBackdrop .modal-footer-actions');
+      if(footer&&!footer.querySelector('.settings-exit-btn')){
+        const b=document.createElement('button'); b.type='button'; b.className='modal-back-btn settings-exit-btn'; b.innerHTML='<i class="fas fa-sign-out-alt"></i> خروج از پنل مدیریت'; b.onclick=function(){if(typeof closeIntegrationSettings==='function')closeIntegrationSettings();if(typeof exitAdminMode==='function')exitAdminMode();}; footer.classList.add('settings-footer-actions'); footer.appendChild(b);
+      }
+      if(typeof renderAll==='function') renderAll();
+      document.querySelectorAll('.item-card .real-photo').forEach(img=>{if(img.dataset.dragonPhotoBound)return;img.dataset.dragonPhotoBound='1';img.addEventListener('error',function(){const id=this.closest('.item-card')?.dataset?.id;const item=typeof ITEMS!=='undefined'?ITEMS.find(x=>String(x.id)===String(id)):null;const src=CAT[item?.cat]||CAT.featured;if(src&&this.src!==src){this.onerror=null;this.src=src;}});});
+    }catch(e){console.error('Dragon V8 patch:',e)}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(apply,80),{once:true}); else setTimeout(apply,80);
+  new MutationObserver(()=>setTimeout(apply,20)).observe(document.documentElement,{subtree:true,childList:true});
 })();

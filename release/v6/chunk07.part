@@ -1,0 +1,171 @@
+text" placeholder="ساعت">
+                        </div>
+                        <div>
+                            <label>برچسب</label>
+                            <select id="fBadge">
+                                <option value="">هیچ</option>
+                                <option value="new">جدید</option>
+                                <option value="hot">داغ</option>
+                                <option value="special">ویژه</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- تصویر محصول: آپلود محلی یا URL -->
+                    <div>
+                        <label>تصویر واقعی محصول</label>
+                        <div class="file-field">
+                            <label class="file-btn"><i class="fas fa-cloud-upload-alt"></i><span>انتخاب تصویر محصول</span><input id="fImageFile" type="file" accept="image/*"></label>
+                            <span class="file-name" id="fImageFileName">فایلی انتخاب نشده است</span>
+                        </div>
+                        <input id="fImage" type="text" placeholder="یا URL تصویر (اختیاری)" style="margin-top:8px;">
+                        <small style="display:block;color:var(--text-dim);margin-top:6px;line-height:1.7;">عکس آپلودی داخل همین منو ذخیره می‌شود و برای نمایش به اینترنت وابسته نیست.</small>
+                    </div>
+                    <div class="chk-row"><input type="checkbox" id="fFeatured"> نمایش در «ویژه»</div>
+                    <div class="chk-row"><input type="checkbox" id="fSoldout"> ناموجود</div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-del" id="fDelete" style="display:none;"><i class="fas fa-trash"></i> حذف</button>
+                    <button class="btn btn-save" id="fSave"><i class="fas fa-save"></i> ذخیره</button>
+                </div>
+                <div class="modal-footer-actions"><button type="button" class="modal-back-btn" onclick="closeForm()"><i class="fas fa-arrow-right"></i> بازگشت</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- toast -->
+        <!-- admin: category images -->
+    <div class="modal-backdrop" id="catManagerBackdrop">
+        <div class="modal"><div class="modal-body">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><h2 style="font-size:20px;"><i class="fas fa-images" style="margin-left:8px;"></i>مدیریت تصاویر دسته‌ها</h2><button class="modal-close" onclick="closeCatManager()" style="position:static;"><i class="fas fa-times"></i></button></div>
+          <div class="divider"></div><div id="catManagerList"></div>
+          <div class="form-actions"><button class="btn btn-save" onclick="saveCatManager()"><i class="fas fa-save"></i> ذخیره</button></div><div class="modal-footer-actions"><button type="button" class="modal-back-btn" onclick="closeCatManager()"><i class="fas fa-arrow-right"></i> بازگشت</button></div>
+        </div></div>
+    </div>
+
+    <!-- admin: orders -->
+    <div class="modal-backdrop" id="orderManagerBackdrop">
+        <div class="modal">
+            <div class="modal-body">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+                    <h2 style="font-size:20px;"><i class="fas fa-receipt" style="margin-left:8px;"></i>سفارش‌های دریافتی</h2>
+                    <button class="modal-close" onclick="closeOrderManager()" style="position:static;"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="divider"></div>
+                <div id="orderManagerList"></div>
+                <div class="modal-footer-actions"><button type="button" class="modal-back-btn" onclick="closeOrderManager()"><i class="fas fa-arrow-right"></i> بازگشت</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- admin: kitchen -->
+    <div class="modal-backdrop" id="kitchenManagerBackdrop">
+        <div class="modal">
+            <div class="modal-body">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+                    <h2 style="font-size:20px;"><i class="fas fa-utensils" style="margin-left:8px;"></i>صفحه آشپزخانه</h2>
+                    <button class="modal-close" onclick="closeKitchenManager()" style="position:static;"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="divider"></div>
+                <div id="kitchenManagerList"></div>
+                <div class="modal-footer-actions"><button type="button" class="modal-back-btn" onclick="closeKitchenManager()"><i class="fas fa-arrow-right"></i> بازگشت</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- admin: integration -->
+    <div class="modal-backdrop" id="integrationBackdrop">
+        <div class="modal">
+            <div class="modal-body">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+                    <h2 style="font-size:20px;"><i class="fas fa-plug" style="margin-left:8px;"></i>اتصال به زعفران</h2>
+                    <button class="modal-close" onclick="closeIntegrationSettings()" style="position:static;"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="divider"></div>
+                <p style="color:var(--text-dim);font-size:12px;line-height:1.8;">آدرس Bridge/API را اینجا تنظیم کن. منو سفارش را به این آدرس با POST ارسال می‌کند؛ تا زمان راه‌اندازی Bridge سفارش‌ها روی همین دستگاه در صف محلی نگه داشته می‌شوند.</p>
+                <div class="form-grid" style="margin-top:12px;">
+                    <div><label>آدرس API / Bridge</label><input id="apiBaseUrl" type="text" placeholder="https://your-domain.example"></div>
+                    <div><label>کلید دسترسی (اختیاری)</label><input id="apiToken" type="password" placeholder="API Token"></div>
+                    <div class="chk-row"><input type="checkbox" id="apiEnabled"> ارسال خودکار سفارش به API</div>
+                    <div class="admin-settings-card"><h3><i class="fas fa-sliders-h"></i> تنظیمات سفارش و ظاهر</h3>
+                      <div class="form-row2"><div><label>حداکثر تعداد اقلام در هر سفارش</label><input id="maxOrderQtyAdmin" type="number" min="0" max="999"><small>۰ یعنی بدون محدودیت</small></div><div><label>پیام رسیدن به سقف</label><input id="maxOrderMessageAdmin" type="text" placeholder="سقف تعداد سفارش این کافه تکمیل شده است."></div></div>
+                      <div style="margin-top:10px"><label>تم رنگی کل سایت</label><div class="theme-grid"><button type="button" class="theme-choice theme-blue" data-theme-choice="blue"><span class="theme-dot"></span>Dragon Blue</button><button type="button" class="theme-choice theme-neon" data-theme-choice="neon"><span class="theme-dot"></span>Neon Harbor</button><button type="button" class="theme-choice theme-midnight" data-theme-choice="midnight"><span class="theme-dot"></span>Midnight</button><button type="button" class="theme-choice theme-cyan" data-theme-choice="cyan"><span class="theme-dot"></span>فیروزه‌ای</button><button type="button" class="theme-choice theme-purple" data-theme-choice="purple"><span class="theme-dot"></span>بنفش</button></div></div><div class="theme-colors-panel"><div><label for="themeTextColor">رنگ متن اصلی</label><div class="color-control"><input id="themeTextColor" type="color" value="#F3F7FF"><span id="themeTextColorValue">#F3F7FF</span></div></div><div><label for="themeMutedColor">رنگ متن فرعی</label><div class="color-control"><input id="themeMutedColor" type="color" value="#9FB3D9"><span id="themeMutedColorValue">#9FB3D9</span></div></div></div>
+                    </div>
+                    <div class="password-change-card"><label>تغییر رمز پنل مدیریت</label><input id="newAdminPin" type="password" autocomplete="new-password" placeholder="رمز جدید را وارد کنید"><small>بعد از ورود می‌توانی رمز شخصی تعیین کنی.</small><button class="btn password-reset" type="button" onclick="resetToMasterPin()"><i class="fas fa-key"></i> بازگشت به رمز مادر</button></div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-save" onclick="saveIntegrationSettings()"><i class="fas fa-save"></i> ذخیره تنظیمات</button>
+                </div>
+                <div class="modal-footer-actions"><button type="button" class="modal-back-btn" onclick="closeIntegrationSettings()"><i class="fas fa-arrow-right"></i> بازگشت</button></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="brandManagerBackdrop"><div class="modal"><div class="modal-body"><div class="modal-headline"><h2><i class="fas fa-palette"></i> برند و لوگو</h2><button class="modal-close static" onclick="closeBrandManager()"><i class="fas fa-times"></i></button></div><div class="divider"></div><div class="brand-preview" id="brandPreview"><i class="fas fa-dragon"></i></div><div class="form-grid" style="margin-top:12px"><div><label>لوگوی اصلی کافه</label><div class="file-field"><label class="file-btn"><i class="fas fa-cloud-upload-alt"></i><span>انتخاب فایل لوگو</span><input id="brandLogoFile" type="file" accept="image/*"></label><span class="file-name" id="brandLogoFileName">فایلی انتخاب نشده است</span></div></div><div><label>نام کافه</label><input id="brandNameInput" type="text"></div><div><label>پیام خوش‌آمدگویی</label><textarea id="brandSubtitleInput"></textarea></div><div><label>توضیح منو</label><textarea id="menuDescriptionInput"></textarea></div></div><div class="form-actions"><button class="btn btn-save" onclick="saveBrandManager()"><i class="fas fa-save"></i> ذخیره</button></div><div class="modal-footer-actions"><button type="button" class="modal-back-btn" onclick="closeBrandManager()"><i class="fas fa-arrow-right"></i> بازگشت</button></div></div></div></div>
+    <div class="modal-backdrop" id="discountManagerBackdrop"><div class="modal"><div class="modal-body"><div class="modal-headline"><h2><i class="fas fa-tags"></i> مدیریت تخفیف‌ها</h2><button class="modal-close static" onclick="closeDiscountManager()"><i class="fas fa-times"></i></button></div><div class="divider"></div><div class="form-grid"><div><label>کد تخفیف</label><input id="couponCodeAdmin" type="text" placeholder="DRAGON10"></div><div class="form-row2"><div><label>درصد تخفیف</label><input id="couponPercentAdmin" type="number" min="1" max="100"></div><div><label>حداقل خرید</label><input id="couponMinAdmin" type="number" min="0"></div></div><div class="form-row2"><div><label>شروع اعتبار</label><input id="couponStartAdmin" type="text" class="jalali-datetime" inputmode="numeric" placeholder="۱۴۰۵/۰۶/۲۶ — ۱۲:۰۰" readonly></div><div><label>پایان اعتبار</label><input id="couponEndAdmin" type="text" class="jalali-datetime" inputmode="numeric" placeholder="۱۴۰۵/۰۶/۲۶ — ۱۲:00" readonly></div></div></div><div class="form-actions"><button class="btn btn-save" onclick="addCouponAdmin()"><i class="fas fa-plus"></i> افزودن کد</button></div><div class="modal-footer-actions"><button type="button" class="modal-back-btn" onclick="closeDiscountManager()"><i class="fas fa-arrow-right"></i> بازگشت</button></div><div id="couponManagerList"></div></div></div></div>
+    <!-- customer order tracking -->
+    <div class="modal-backdrop" id="trackingBackdrop">
+      <div class="modal"><div class="modal-body">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+          <h2 style="font-size:20px;"><i class="fas fa-route" style="margin-left:8px;"></i>پیگیری سفارش</h2>
+          <button class="modal-close" id="trackingClose" style="position:static;"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="divider"></div>
+        <div id="trackingContent"></div>
+      </div></div>
+    </div>
+
+    <!-- admin login -->
+    <div class="modal-backdrop" id="adminLoginBackdrop">
+      <div class="modal"><div class="modal-body">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+          <h2 style="font-size:20px;"><i class="fas fa-shield-alt" style="margin-left:8px;"></i>ورود مدیریت</h2>
+          <button class="modal-close" id="adminLoginClose" style="position:static;"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="divider"></div>
+        <div class="login-box">
+          <div class="login-brand"><div class="login-dragon" id="loginDragonBox"><i class="fas fa-dragon"></i></div><strong>ورود امن مدیریت</strong><span>رمز مدیریت را وارد کنید.</span></div>
+          <input id="adminPinInput" class="login-pin" type="password" inputmode="text" autocomplete="current-password" placeholder="رمز مدیریت">
+          <button class="btn btn-save login-submit" id="adminLoginSubmit"><span>ورود</span><i class="fas fa-sign-in-alt"></i></button>
+          <div class="modal-footer-actions"><button type="button" class="modal-back-btn" onclick="document.getElementById('adminLoginBackdrop').classList.remove('open')"><i class="fas fa-arrow-right"></i> بازگشت</button></div>
+        </div>
+      </div></div>
+    </div>
+
+<div class="toast" id="toast">به سفارش اضافه شد</div>
+
+    <script>
+        // ==================== DATA ====================
+        const CATS = [
+            { id: 'featured', label: 'ویژه', icon: '⭐', grad: 'linear-gradient(135deg,#233a63,#4fb3ff)' },
+            { id: 'hot', label: 'گرم', icon: '☕', grad: 'linear-gradient(135deg,#3a2b1f,#ffd166)' },
+            { id: 'cold', label: 'سرد', icon: '🧊', grad: 'linear-gradient(135deg,#1c3a4a,#57e0e0)' },
+            { id: 'snacks', label: 'اسنک', icon: '🍟', grad: 'linear-gradient(135deg,#3a2b1f,#ff9a4d)' },
+            { id: 'ps5', label: 'PS5', icon: '🎮', grad: 'linear-gradient(135deg,#2a2058,#7c6cff)' },
+            { id: 'pc', label: 'PC', icon: '🖥️', grad: 'linear-gradient(135deg,#1c3350,#4fb3ff)' },
+            { id: 'xbox', label: 'Xbox', icon: '🕹️', grad: 'linear-gradient(135deg,#1f3a2a,#57e08a)' },
+            { id: 'vr', label: 'VR', icon: '🥽', grad: 'linear-gradient(135deg,#2a1f4a,#b06bff)' },
+            { id: 'combo', label: 'کمبو', icon: '🔥', grad: 'linear-gradient(135deg,#3a1f2b,#ff6b81)' },
+        ];
+
+        const CAT_IMAGES = {};
+        let CUSTOM_CAT_IMAGES = {};
+
+        // آیتم‌های پیش‌فرض با ایموجی و تصویر
+        // ITEMS_START
+        let ITEMS = [
+            { id: 1, cat: 'hot', name: 'اسپرسو دوبل', desc: 'شات دوبل، تلخ و پرانرژی برای شروع بازی', price: 45000,
+                emoji: '☕' },
+            { id: 2, cat: 'hot', name: 'کاپوچینو', desc: 'اسپرسو با شیر بخار داده و فوم غلیظ', price: 55000, emoji: '☕' },
+            { id: 3, cat: 'hot', name: 'لاته وانیل', desc: 'قهوه ملایم با سیراپ وانیل فرانسوی', price: 65000, oldPrice: 75000,
+                featured: true, badge: { t: 'ویژه', c: '' }, emoji: '☕' },
+            { id: 4, cat: 'hot', name: 'موکای شکلاتی', desc: 'اسپرسو، شکلات تلخ بلژیکی و خامه', price: 70000, emoji: '☕' },
+            { id: 5, cat: 'cold', name: 'آیس لاته', desc: 'قهوه سرد روی یخ با شیر تازه', price: 65000, emoji: '🧊' },
+            { id: 6, cat: 'cold', name: 'موهیتو نعنا', desc: 'لیموی تازه، نعنا و سودای گازدار', price: 75000, emoji: '🧊' },
+            { id: 7, cat: 'cold', name: 'اسموتی توت‌فرنگی', desc: 'توت‌فرنگی تازه، ماست و عسل طبیعی', price: 85000,
+                badge: { t: 'جدید', c: 'new' }, emoji: '🍓' },
+            { id: 8, cat: 'cold', name: 'انرژی‌زا میکس', desc: 'ردبول با آبمیوه طبیعی و یخ خرد', price: 95000, emoji: '⚡' },
+            { id: 9, cat: 'snacks', name: 'سیب‌زمینی سرخ‌کرده', desc: 'ترد و داغ، سرو با سس چیلی‌میو', price: 90000,
+                emoji: '🍟' },
+            { id: 10, cat: 'snacks', name: 'ناچوز پنیری', desc: 'چیپس ذرت، سس پنیر مخصوص و پیکو دو گایو', price: 120000,
+                oldPrice: 140000, featured: true, badge: { t: 'ویژه', c: '' }, emoji: '🧀' },
+            { id: 11, cat: 'snacks', name: 'پیتزا مینی پپرونی', desc: 'خمیر نازک، پپرونی و پنیر موزارلا', price: 110000,

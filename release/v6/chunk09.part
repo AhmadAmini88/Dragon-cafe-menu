@@ -1,0 +1,164 @@
+ment.getElementById('searchInput').value = '';
+                    renderAll();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+        }
+
+        function renderHeading() {
+            const c = catOf(activeCat);
+            document.getElementById('catEm').textContent = c.icon;
+            document.getElementById('catTitle').textContent = activeCat === 'featured' ? (CAT_META[c.id]?.label||'پیشنهاد ویژه') : (CAT_META[c.id]?.label||'دسته ' + c.label);
+            const mainEl = document.querySelector('.main');
+            if (activeCat === 'featured') mainEl.classList.add('cat-featured');
+            else mainEl.classList.remove('cat-featured');
+        }
+
+        function currentList() {
+            let list = activeCat === 'featured' ? ITEMS.filter(i => i.featured) : ITEMS.filter(i => i.cat === activeCat);
+            if (searchQuery.trim()) {
+                const q = searchQuery.trim().toLowerCase();
+                list = ITEMS.filter(i => i.name.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q));
+            }
+            return list;
+        }
+
+        function renderItems(){
+            const list=currentList(),wrap=document.getElementById('itemsWrap');
+            if(!list.length){wrap.innerHTML='<p style="color:var(--text-dim);font-size:14px;padding:30px 4px;text-align:center;">آیتمی پیدا نشد.</p>';return;}
+            wrap.innerHTML=list.map(i=>{
+                const bgGrad=catOf(i.cat).grad,visual=visualForItem(i),
+                    imgSrc=i.img?(i.img.startsWith('data:image/')||i.img.startsWith('http')?i.img:getImage(i.img)):'',
+                    q=cartItems[i.id]?.quantity||0;
+                const fallbackForBroken=DRAGON_LOGO_DATA_URL.replace(/\\/g,'\\\\');
+                return `<div class="item-card ${i.soldout?'soldout':''}" data-id="${i.id}">
+                  <div class="img-wrap" style="background:${bgGrad};">
+                    ${visual?`<div class="photo-fallback">${visual}</div>`:''}
+                    ${imgSrc?`<img class="real-photo" src="${esc(imgSrc)}" alt="${esc(i.name)}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackForBroken}';this.classList.add('fallback-active')">`:''}
+                    ${i.badge?`<span class="badge ${i.badge.c}">${esc(i.badge.t)}</span>`:''}
+                    ${i.soldout?'<span class="soldout-tag">ناموجود</span>':''}
+                    ${adminMode?`<span class="admin-row"><button class="admin-mini" data-edit="${i.id}"><i class="fas fa-pen"></i></button><button class="admin-mini" data-del="${i.id}"><i class="fas fa-trash"></i></button></span>`:''}
+                  </div>
+                  <div class="item-body">
+                    <div class="item-name">${esc(i.name)}</div>
+                    <div class="item-desc">${esc(i.desc)}</div>
+                    <div class="item-foot">
+                      ${q?`<div class="add-control"><button type="button" data-card-dec="${i.id}"><i class="fas fa-minus"></i></button><span class="qty-value">${toFa(q)}</span><button type="button" data-card-inc="${i.id}"><i class="fas fa-plus"></i></button></div>`:`<button class="add-btn" data-add="${i.id}" ${i.soldout?'disabled':''}><i class="fas fa-plus"></i></button>`}
+                      <div class="price-wrap">${i.oldPrice?`<span class="old-price">${toFa(i.oldPrice)} تومان</span>`:''}<span class="price">${toFa(i.price)} <span class="unit">تومان${i.unit?' / '+esc(i.unit):''}</span></span></div>
+                    </div>
+                  </div>
+                </div>`;
+            }).join('');
+            wrap.querySelectorAll('.item-card').forEach(card=>card.addEventListener('click',e=>{if(e.target.closest('.add-btn,.add-control,.admin-mini'))return;openModal(Number(card.dataset.id))}));
+            wrap.querySelectorAll('.add-btn').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();if(!btn.disabled)addToCart(Number(btn.dataset.add))}));
+            wrap.querySelectorAll('[data-card-inc]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();addToCart(Number(btn.dataset.cardInc))}));
+            wrap.querySelectorAll('[data-card-dec]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();removeFromCart(Number(btn.dataset.cardDec))}));
+            wrap.querySelectorAll('[data-edit]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();openForm(Number(btn.dataset.edit))}));
+            wrap.querySelectorAll('[data-del]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();deleteItem(Number(btn.dataset.del))}));
+        }
+        function getLastOrder(){ try { const os=getOrders(); return os[0] || null; } catch(_) { return null; } }
+        function updateCartUI(){const count=Object.values(cartItems).reduce((s,c)=>s+c.quantity,0);const subtotal=Object.values(cartItems).reduce((s,c)=>s+c.quantity*c.item.price,0);const discount=currentCoupon&&subtotal>=currentCoupon.min&&couponIsActive(currentCoupon)?Math.round(subtotal*currentCoupon.percent/100):0;const total=Math.max(0,subtotal-discount);const ce=document.getElementById('cartCount');if(ce){ce.style.display=count?'flex':'none';ce.textContent=toFa(count)}const bc=document.getElementById('bottomCart');if(bc){const a=bc.querySelector('.bb-cart-amount');if(a)a.innerHTML=count?`<span class="bb-cart-num">${toFa(total)}</span><small class="bb-cart-unit">تومان</small>`:''}saveData()}
+        function bindBottomBar(){
+            const cart=document.getElementById('bottomCart');
+            if(cart && !cart.dataset.bound){ cart.addEventListener('click',openCartModal); cart.dataset.bound='1'; }
+            const track=document.getElementById('bottomTrack');
+            if(track && !track.dataset.bound){ track.addEventListener('click',openTrackingModal); track.dataset.bound='1'; }
+        }
+
+        function renderAll() {
+            const steps = [
+                () => renderSidebar(),
+                () => renderHeading(),
+                () => renderItems(),
+                () => updateCartUI(),
+                () => bindBottomBar(),
+                () => renderTableIdentity()
+            ];
+            for (const step of steps) { try { step(); } catch (err) { console.error('Dragon render error:', err); } }
+        }
+
+        // ==================== WELCOME POPUP ====================
+        (function showWelcome(){const p=document.getElementById('welcomePopup');setTimeout(()=>{p.classList.add('hide');setTimeout(()=>p.style.display='none',500)},1800)})();
+
+        // ==================== MODAL ====================
+        function openModal(id){
+            const i=ITEMS.find(x=>x.id===id);if(!i)return;
+            const hero=document.getElementById('modalHero');hero.style.background=catOf(i.cat).grad;
+            const rawImg=i.img?(i.img.startsWith('data:image/')||i.img.startsWith('http')?i.img:getImage(i.img)):'',
+                safeLogo=DRAGON_LOGO_DATA_URL.replace(/\\/g,'\\\\');
+            const heroVisual=rawImg
+                ?`<img src="${esc(rawImg)}" class="modal-real-photo" onerror="this.onerror=null;this.src='${safeLogo}'" alt="${esc(i.name)}">`
+                :visualForItem(i);
+            hero.innerHTML=`<button class="modal-close" id="modalClose2"><i class="fas fa-times"></i></button><div class="overlay"></div><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">${heroVisual}</div>`;
+            document.getElementById('modalClose2').addEventListener('click',closeModal);
+            document.getElementById('modalName').textContent=i.name;
+            document.getElementById('modalDesc').textContent=i.desc+(i.soldout?' — در حال حاضر ناموجود':'');
+            document.getElementById('modalPrice').innerHTML=`${toFa(i.price)} <span class="unit">تومان${i.unit?' / '+esc(i.unit):''}</span>`;
+            const oldEl=document.getElementById('modalOld');if(i.oldPrice){oldEl.style.display='block';oldEl.textContent=toFa(i.oldPrice)+' تومان'}else oldEl.style.display='none';
+            const area=document.getElementById('modalQtyArea'),q=cartItems[i.id]?.quantity||0;
+            area.innerHTML=q?`<div class="modal-qty-control"><button data-modal-dec="${i.id}"><i class="fas fa-minus"></i></button><span>${toFa(q)}</span><button data-modal-inc="${i.id}"><i class="fas fa-plus"></i></button></div>`:`<button class="modal-add" id="modalAdd" ${i.soldout?'disabled':''}><i class="fas fa-plus"></i> افزودن</button>`;
+            if(q){area.querySelector('[data-modal-inc]').addEventListener('click',()=>{addToCart(i.id);openModal(i.id)});area.querySelector('[data-modal-dec]').addEventListener('click',()=>{removeFromCart(i.id);if(cartItems[i.id])openModal(i.id);else closeModal()})}
+            else area.querySelector('#modalAdd').addEventListener('click',()=>{if(!i.soldout){addToCart(i.id);openModal(i.id)}});
+            document.getElementById('modalBackdrop').classList.add('open');syncAdminModalChrome?.();
+        }
+        function closeModal() {
+            document.getElementById('modalBackdrop').classList.remove('open');
+        }
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.getElementById('modalBackdrop').addEventListener('click', (e) => { if (e.target.id === 'modalBackdrop')
+                closeModal(); });
+
+        // ==================== CART ====================
+        function getCartCount(){return Object.values(cartItems).reduce((s,c)=>s+c.quantity,0)}
+        function addToCart(id){const i=ITEMS.find(x=>x.id===id);if(!i||i.soldout)return false;const max=Math.max(0,Number(CAFE_SETTINGS.maxOrderQty)||0);if(max>0&&getCartCount()>=max){showMessage('محدودیت سفارش',CAFE_SETTINGS.maxOrderMessage||`حداکثر ${toFa(max)} قلم در هر سفارش مجاز است.`);return false}if(cartItems[id])cartItems[id].quantity+=1;else cartItems[id]={item:i,quantity:1};updateCartUI();renderItems();return true}
+        function removeFromCart(id){if(!cartItems[id])return;cartItems[id].quantity-=1;if(cartItems[id].quantity<=0)delete cartItems[id];updateCartUI();renderItems();if(document.getElementById('cartBackdrop').classList.contains('open'))renderCartModal()}
+        function openCartModal() {
+            document.getElementById('cartBackdrop').classList.add('open');
+            renderCartModal();
+        }
+
+        function closeCartModal() {
+            document.getElementById('cartBackdrop').classList.remove('open');
+        }
+
+        function renderCartModal() {
+            const container = document.getElementById('cartItems');
+            const ids = Object.keys(cartItems);
+            if (ids.length === 0) {
+                container.innerHTML = `<div class="cart-empty">سبد خرید خالی است</div>`;
+                document.getElementById('cartTotalPrice').textContent = '۰ تومان';
+                return;
+            }
+            let total = 0;
+            container.innerHTML = ids.map(id => {
+                const entry = cartItems[id];
+                const i = entry.item;
+                total += entry.quantity * i.price;
+                const imgSrc = i.img ? getImage(i.img) : '';
+                return `
+                        <div class="cart-item">
+                            <div class="ci-img" style="background:${catOf(i.cat).grad};">
+                                ${imgSrc ? `<img src="${imgSrc}" alt="${i.name}" loading="lazy" onerror="this.style.display='none';">` : (i.emoji || catOf(i.cat).icon)}
+                            </div>
+                            <div class="ci-info">
+                                <div class="ci-name">${i.name}</div>
+                                <div class="ci-price">${toFa(i.price)} تومان</div>
+                            </div>
+                            <div class="ci-qty">
+                                <button data-cart-dec="${id}"><i class="fas fa-minus"></i></button>
+                                <span>${entry.quantity}</span>
+                                <button data-cart-inc="${id}"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    `;
+            }).join('');
+            document.getElementById('cartTotalPrice').textContent = toFa(total) + ' تومان';
+            container.querySelectorAll('[data-cart-inc]').forEach(btn => {
+                btn.addEventListener('click', () => { addToCart(Number(btn.dataset.cartInc));
+                    renderCartModal();
+                    updateCartUI(); });
+            });
+            container.querySelectorAll('[data-cart-dec]').forEach(btn => {
+                btn.addEventListener('click', () => { removeFromCart(Number(btn.dataset.cartDec));
+                    renderCartModal();
+                    updateCartUI();

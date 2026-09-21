@@ -111,3 +111,73 @@
 .modal-qty-control span{grid-column:2!important;width:100%!important;min-width:0!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;direction:ltr!important;unicode-bidi:isolate!important;margin:0!important;padding:0!important;white-space:nowrap!important;line-height:1!important;font-variant-numeric:tabular-nums!important}
 .modal-qty-control button:first-child{grid-column:1!important}.modal-qty-control button:last-child{grid-column:3!important}
 @media(max-width:380px){#modalBackdrop .modal-hero .modal-close,#modalBackdrop .modal-hero #modalClose2{left:9px!important;top:9px!important;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important}.item-foot>.add-control{grid-template-columns:34px minmax(0,1fr) 34px!important}.modal-qty-control{grid-template-columns:38px minmax(0,1fr) 38px!important}}
+
+
+/* DRAGON V32 FINAL — modal price centering + single close + mathematically centered quantity */
+#modalBackdrop .modal-hero{position:relative!important;overflow:hidden!important}
+#modalBackdrop .modal-hero #modalClose2{
+  position:absolute!important;left:12px!important;right:auto!important;top:12px!important;
+  width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  padding:0!important;margin:0!important;z-index:100!important;
+}
+#modalBackdrop #modalBodyClose{display:none!important}
+#modalBackdrop .modal-foot .dg-modal-price-pair{
+  width:100%!important;min-width:0!important;margin:0 auto!important;
+  display:grid!important;place-items:center!important;text-align:center!important;
+}
+#modalBackdrop .modal-foot .dg-modal-price-pair:not(.has-discount){grid-template-columns:minmax(0,1fr)!important}
+#modalBackdrop .modal-foot .dg-modal-price-pair.has-discount{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+#modalBackdrop .modal-foot .dg-price-card{
+  width:100%!important;min-width:0!important;box-sizing:border-box!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  gap:7px!important;text-align:center!important;direction:ltr!important;
+}
+#modalBackdrop .modal-foot #modalPrice,#modalBackdrop .modal-foot #modalOld{justify-content:center!important;text-align:center!important}
+#modalBackdrop .modal-foot #modalPrice .dg-price-number,#modalBackdrop .modal-foot #modalPrice .dg-price-unit,
+#modalBackdrop .modal-foot #modalOld .dg-price-number,#modalBackdrop .modal-foot #modalOld .dg-price-unit{flex:0 0 auto!important;margin:0!important}
+.item-foot>.add-control{
+  direction:ltr!important;display:grid!important;
+  grid-template-columns:40px minmax(0,1fr) 40px!important;
+  align-items:center!important;justify-items:center!important;justify-content:center!important;
+  padding:0!important;overflow:hidden!important;
+}
+.item-foot>.add-control button{
+  width:40px!important;min-width:40px!important;height:100%!important;margin:0!important;padding:0!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+}
+.item-foot>.add-control .qty-value{
+  grid-column:2!important;width:100%!important;min-width:0!important;height:100%!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  text-align:center!important;direction:ltr!important;unicode-bidi:isolate!important;
+  margin:0!important;padding:0!important;line-height:1!important;white-space:nowrap!important;
+  font-variant-numeric:tabular-nums!important;
+}
+.item-foot>.add-control button:first-child{grid-column:1!important}
+.item-foot>.add-control button:last-child{grid-column:3!important}
+.modal-foot #modalQtyArea .modal-qty-control{
+  direction:ltr!important;display:grid!important;
+  grid-template-columns:42px minmax(0,1fr) 42px!important;
+  align-items:center!important;justify-items:center!important;justify-content:center!important;
+  padding:0!important;overflow:hidden!important;
+}
+.modal-foot #modalQtyArea .modal-qty-control button{
+  width:42px!important;min-width:42px!important;height:100%!important;margin:0!important;padding:0!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+}
+.modal-foot #modalQtyArea .modal-qty-control span{
+  grid-column:2!important;width:100%!important;min-width:0!important;height:100%!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  text-align:center!important;direction:ltr!important;unicode-bidi:isolate!important;
+  margin:0!important;padding:0!important;line-height:1!important;white-space:nowrap!important;
+  font-variant-numeric:tabular-nums!important;
+}
+.modal-foot #modalQtyArea .modal-qty-control button:first-child{grid-column:1!important}
+.modal-foot #modalQtyArea .modal-qty-control button:last-child{grid-column:3!important}
+@media(max-width:380px){
+ #modalBackdrop .modal-hero #modalClose2{left:9px!important;top:9px!important;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important}
+ .item-foot>.add-control{grid-template-columns:34px minmax(0,1fr) 34px!important}
+ .item-foot>.add-control button{width:34px!important;min-width:34px!important}
+ .modal-foot #modalQtyArea .modal-qty-control{grid-template-columns:38px minmax(0,1fr) 38px!important}
+ .modal-foot #modalQtyArea .modal-qty-control button{width:38px!important;min-width:38px!important}
+}

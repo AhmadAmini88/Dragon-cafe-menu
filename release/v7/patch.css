@@ -8,3 +8,91 @@
 .modal-foot .price-wrap{display:flex!important;flex-direction:row!important;align-items:baseline!important;justify-content:flex-start!important;gap:8px!important;min-width:0!important;max-width:100%!important;overflow:visible!important;direction:ltr!important;white-space:nowrap!important}#modalOld{display:inline-flex!important;flex:none!important;font-size:14px!important;line-height:1!important;color:#ff879a!important;text-decoration:line-through!important;white-space:nowrap!important;margin:0!important}#modalPrice{display:inline-flex!important;flex:none!important;white-space:nowrap!important;overflow:visible!important;margin:0!important;font-size:inherit!important}#modalPrice .price-line{display:inline-flex!important;align-items:baseline!important;gap:6px!important;white-space:nowrap!important;width:auto!important;overflow:visible!important}#modalPrice .price{font-size:clamp(19px,5vw,25px)!important;line-height:1!important;font-weight:950!important;white-space:nowrap!important}#modalPrice .unit{font-size:10px!important;line-height:1!important;white-space:nowrap!important}
 @media(max-width:720px){.search-row{margin:8px 10px 0!important;border-radius:15px!important}.search-row input{height:44px!important;line-height:44px!important;padding:0 13px!important}.cat-heading{grid-template-columns:auto minmax(0,1fr) auto!important;gap:5px!important;padding:11px 7px 7px!important}.cat-heading .em{font-size:22px!important}.cat-heading-main{gap:5px!important}.cat-heading-main h1{font-size:15px!important}.cat-heading .sub{max-width:82px!important;font-size:7.5px!important}.modal-body{padding:14px!important}.item-foot{grid-template-columns:minmax(0,1fr) 42px!important;gap:8px!important}.item-foot>.price-wrap{padding:6px 7px!important}.price-line{gap:6px!important}.price-line .old-price{font-size:12px!important}.price-line .price{font-size:clamp(17px,5vw,21px)!important}.price-line .unit{font-size:clamp(8px,2.7vw,10px)!important}.bottom-bar:not(.admin-mode) .bb-cart-num{font-size:clamp(13px,4.6vw,18px)!important}.settings-footer-actions{grid-template-columns:1fr!important}}
 @media(max-width:380px){.cat-heading .em{font-size:20px!important}.cat-heading-main h1{font-size:14px!important}.cat-heading .sub{max-width:76px!important;font-size:7px!important;padding:4px!important}.item-foot{grid-template-columns:minmax(0,1fr) 40px!important;gap:6px!important}.price-line{gap:5px!important}.price-line .old-price{font-size:11px!important}.price-line .price{font-size:17px!important}.price-line .unit{font-size:8px!important}.bottom-bar:not(.admin-mode) .bb-cart-num{font-size:13px!important}.bottom-bar:not(.admin-mode) .bb-cart-unit{font-size:8px!important}#modalOld{font-size:12px!important}#modalPrice .price{font-size:19px!important}#modalPrice .unit{font-size:9px!important}}
+
+
+/* DRAGON V31 FINAL UI FIX — modal price/close + quantity centering */
+#modalBackdrop .modal-hero #modalClose,
+#modalBackdrop #modalBodyClose{
+  display:none!important;
+}
+#modalBackdrop .modal-hero #modalClose2{
+  position:absolute!important;
+  top:12px!important;
+  left:12px!important;
+  right:auto!important;
+  z-index:60!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0!important;
+  margin:0!important;
+}
+#modalBackdrop .modal-foot .dg-modal-price-pair{
+  display:grid!important;
+  width:100%!important;
+  min-width:0!important;
+  place-items:center!important;
+  justify-content:center!important;
+  align-items:center!important;
+  text-align:center!important;
+  margin-inline:auto!important;
+}
+#modalBackdrop .modal-foot .dg-modal-price-pair:not(.has-discount){
+  grid-template-columns:minmax(0,1fr)!important;
+}
+#modalBackdrop .modal-foot .dg-modal-price-pair.has-discount{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+}
+#modalBackdrop .modal-foot .dg-price-card{
+  justify-content:center!important;
+  align-items:center!important;
+  text-align:center!important;
+  margin:0!important;
+}
+#modalBackdrop .modal-foot #modalPrice,
+#modalBackdrop .modal-foot #modalOld{
+  justify-content:center!important;
+  align-items:center!important;
+  text-align:center!important;
+  direction:ltr!important;
+}
+#modalBackdrop .modal-foot #modalPrice .dg-price-unit,
+#modalBackdrop .modal-foot #modalPrice .dg-price-number,
+#modalBackdrop .modal-foot #modalOld .dg-price-unit,
+#modalBackdrop .modal-foot #modalOld .dg-price-number{
+  flex:0 0 auto!important;
+}
+.item-foot>.add-control .qty-value,
+.item-foot>.add-control .qty-value{
+  flex:1 1 auto!important;
+  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  direction:ltr!important;
+  line-height:1!important;
+  margin:0!important;
+  padding:0!important;
+}
+.modal-foot #modalQtyArea .modal-qty-control{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  direction:ltr!important;
+}
+.modal-foot #modalQtyArea .modal-qty-control span{
+  flex:1 1 auto!important;
+  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  direction:ltr!important;
+  line-height:1!important;
+  margin:0!important;
+  padding:0!important;
+}

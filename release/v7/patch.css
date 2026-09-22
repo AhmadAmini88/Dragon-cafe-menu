@@ -286,3 +286,21 @@
 .modal-foot #modalQtyArea .modal-qty-control button:first-child{grid-column:1!important}.modal-foot #modalQtyArea .modal-qty-control button:last-child{grid-column:3!important}
 .modal-foot #modalQtyArea .modal-qty-control span{grid-column:2!important;grid-row:1!important;width:100%!important;min-width:0!important;height:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:0!important;padding:0!important;text-align:center!important;direction:ltr!important;unicode-bidi:isolate!important;line-height:1!important;white-space:nowrap!important;overflow:visible!important;font-variant-numeric:tabular-nums!important}
 @media(max-width:380px){#modalBackdrop .modal-hero #modalClose2{top:8px!important;left:8px!important;width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important}.item-foot>.add-control{grid-template-columns:36px minmax(0,1fr) 36px!important;width:156px!important;max-width:156px!important}.item-foot>.add-control>button{width:36px!important;min-width:36px!important}.modal-foot #modalQtyArea .modal-qty-control{grid-template-columns:38px minmax(0,1fr) 38px!important;width:170px!important;max-width:170px!important}.modal-foot #modalQtyArea .modal-qty-control button{width:38px!important;min-width:38px!important}}
+
+
+/* DRAGON V33.2 — final requested fixes */
+#modalBackdrop .modal-hero #modalClose2{left:10px!important;right:auto!important;top:10px!important;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;display:flex!important;align-items:center!important;justify-content:center!important;z-index:999!important}
+#modalBackdrop #modalBodyClose{display:none!important}
+#modalBackdrop .modal-foot .dg-modal-price-pair:not(.has-discount) #modalPrice{width:auto!important;max-width:100%!important;margin:0 auto!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;direction:ltr!important;text-align:center!important;white-space:nowrap!important;overflow:visible!important}
+#modalBackdrop .modal-foot .dg-modal-price-pair:not(.has-discount) #modalPrice .dg-price-number{order:1!important;text-align:center!important}
+#modalBackdrop .modal-foot .dg-modal-price-pair:not(.has-discount) #modalPrice .dg-price-unit{order:2!important;text-align:center!important}
+.item-foot>.add-control{display:grid!important;grid-template-columns:40px minmax(0,1fr) 40px!important;align-items:center!important;justify-items:center!important;direction:ltr!important}
+.item-foot>.add-control>.qty-value{grid-column:2!important;grid-row:1!important;display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;height:100%!important;text-align:center!important;direction:ltr!important;unicode-bidi:isolate!important;margin:0!important;padding:0!important}
+.item-foot>.add-control>button:first-child{grid-column:1!important;grid-row:1!important}.item-foot>.add-control>button:last-child{grid-column:3!important;grid-row:1!important}
+.modal-foot #modalQtyArea .modal-qty-control{display:grid!important;grid-template-columns:42px minmax(0,1fr) 42px!important;align-items:center!important;justify-items:center!important;direction:ltr!important}
+.modal-foot #modalQtyArea .modal-qty-control span{grid-column:2!important;grid-row:1!important;display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;height:100%!important;text-align:center!important;direction:ltr!important;unicode-bidi:isolate!important}
+.received-order-summary{justify-content:center!important;text-align:center!important}
+.received-order-qty{display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;direction:rtl!important}
+.received-order-admin-tools{display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;margin-top:7px!important}
+.received-order-admin-tools button{width:32px!important;height:32px!important;min-width:32px!important;border-radius:10px!important}
+.received-order-admin-footer{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin-top:10px!important}

@@ -188,3 +188,48 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true}); else boot();
 })();
 
+
+
+/* DRAGON V33.2 — received-order manager + product image click */
+(function(){
+  window.dragonV332AdjustOrderItem=function(orderId,index,delta){
+    const os=typeof getOrders==='function'?getOrders():[],o=os.find(x=>String(x.id)===String(orderId));
+    if(!o||o.status==='cancelled'||!o.items?.[index])return;
+    const it=o.items[index]; const next=Math.max(0,(Number(it.qty)||0)+Number(delta||0));
+    if(next===0)o.items.splice(index,1);else it.qty=next;
+    if(!o.items.length)o.status='cancelled';
+    o.subtotal=(o.items||[]).reduce((s,x)=>s+(Number(x.price)||0)*(Number(x.qty)||0),0);
+    o.total=Math.max(0,o.subtotal-Math.max(0,Number(o.discount)||0)); o.updatedAt=new Date().toISOString();
+    saveOrders(os);openOrderManager();
+  };
+  window.dragonV332CancelOrder=function(orderId){
+    const os=getOrders(),o=os.find(x=>String(x.id)===String(orderId));if(!o||o.status==='cancelled')return;
+    if(!confirm('سفارش لغو شود؟'))return;o.status='cancelled';o.cancelledAt=new Date().toISOString();o.updatedAt=o.cancelledAt;saveOrders(os);openOrderManager();
+  };
+  function bind(){
+    document.querySelectorAll('#itemsWrap .item-card .img-wrap').forEach(w=>{
+      if(w.dataset.v332)return;w.dataset.v332='1';w.addEventListener('click',e=>{if(e.target.closest('.admin-mini,.admin-row'))return;const c=w.closest('.item-card');if(c)openModal(Number(c.dataset.id));});
+    });
+    document.querySelectorAll('#orderManagerList .admin-order-card').forEach(card=>{
+      const id=card.dataset.orderId||card.querySelector('.order-number-row-v19 strong')?.textContent?.trim();if(!id)return;
+      const o=getOrders().find(x=>String(x.id)===String(id));if(!o)return;
+      card.querySelectorAll('.received-order-item').forEach((row,i)=>{
+        const q=row.querySelector('.received-order-qty');if(q&&o.items?.[i])q.textContent='تعداد - '+toFa(o.items[i].qty)+' عدد';
+        if(row.querySelector('.received-order-admin-tools')||!o.items?.[i]||o.status==='cancelled')return;
+        const tools=document.createElement('div');tools.className='received-order-admin-tools';
+        const minus=document.createElement('button');minus.innerHTML='<i class="fas fa-minus"></i>';minus.onclick=()=>dragonV332AdjustOrderItem(o.id,i,-1);
+        const plus=document.createElement('button');plus.innerHTML='<i class="fas fa-plus"></i>';plus.onclick=()=>dragonV332AdjustOrderItem(o.id,i,1);
+        tools.append(minus,plus);row.querySelector('.received-order-info')?.appendChild(tools);
+      });
+      if(!card.querySelector('.received-order-admin-footer')){
+        const f=document.createElement('div');f.className='received-order-admin-footer';
+        f.innerHTML='<button type="button">حفظ تغییرات</button><button type="button" class="danger-edit">لغو سفارش</button>';
+        f.children[0].onclick=()=>openOrderManager();f.children[1].onclick=()=>dragonV332CancelOrder(o.id);
+        card.appendChild(f);
+      }
+    });
+  }
+  const old=window.openOrderManager;if(old&&!old.__v332){const w=function(){const r=old.apply(this,arguments);setTimeout(bind,0);return r};w.__v332=true;window.openOrderManager=w;}
+  const oldR=window.renderItems;if(oldR&&!oldR.__v332){const w=function(){const r=oldR.apply(this,arguments);setTimeout(bind,0);return r};w.__v332=true;window.renderItems=w;}
+  setTimeout(bind,300);setTimeout(bind,1000);
+})();

@@ -113,7 +113,7 @@
 @media(max-width:380px){#modalBackdrop .modal-hero .modal-close,#modalBackdrop .modal-hero #modalClose2{left:9px!important;top:9px!important;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important}.item-foot>.add-control{grid-template-columns:34px minmax(0,1fr) 34px!important}.modal-qty-control{grid-template-columns:38px minmax(0,1fr) 38px!important}}
 
 
-/* DRAGON V32 FINAL — modal price centering + single close + mathematically centered quantity */
+/* DRAGON V32 FINAL — modal price centering + single close + mathematically centered quantity — synced 2026-09-22 */
 #modalBackdrop .modal-hero{position:relative!important;overflow:hidden!important}
 #modalBackdrop .modal-hero #modalClose2{
   position:absolute!important;left:12px!important;right:auto!important;top:12px!important;

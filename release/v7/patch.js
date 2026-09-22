@@ -12,6 +12,8 @@
       if(changed&&typeof saveData==='function')saveData();
     }
     document.querySelectorAll('.admin-section-nav').forEach(n=>n.remove());
+    document.getElementById('modalBodyClose')?.remove();
+    document.getElementById('modalClose')?.remove();
     const footer=document.querySelector('#integrationBackdrop .modal-footer-actions');
     if(footer&&!footer.querySelector('.settings-exit-btn')){const b=document.createElement('button');b.type='button';b.className='modal-back-btn settings-exit-btn';b.innerHTML='<i class="fas fa-sign-out-alt"></i> خروج از پنل مدیریت';b.onclick=function(){if(typeof closeIntegrationSettings==='function')closeIntegrationSettings();if(typeof exitAdminMode==='function')exitAdminMode();};footer.classList.add('settings-footer-actions');footer.appendChild(b);}
     if(typeof renderAll==='function')renderAll();

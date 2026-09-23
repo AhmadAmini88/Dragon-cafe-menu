@@ -19,8 +19,10 @@
   const js=await fetch('./release/v7/patch.js',{cache:'no-store'}).then(r=>r.text());
   const css32=await fetch('./release/v32/patch.css',{cache:'no-store'}).then(r=>r.text());
   const js32=await fetch('./release/v32/patch.js',{cache:'no-store'}).then(r=>r.text());
-  html=html.replace('</head>',`<style id="dragon-v7-external-patch">${css}</style><style id="dragon-v32-external-patch">${css32}</style></head>`);
-  html=html.replace('</body>',`<script>${js}<\\/script><script>${js32}<\\/script></body>`);
+  const css33=await fetch('./release/v33/patch.css',{cache:'no-store'}).then(r=>r.text());
+  const js33=await fetch('./release/v33/patch.js',{cache:'no-store'}).then(r=>r.text());
+  html=html.replace('</head>',`<style id="dragon-v7-external-patch">${css}</style><style id="dragon-v32-external-patch">${css32}</style><style id="dragon-v33-external-patch">${css33}</style></head>`);
+  html=html.replace('</body>',`<script>${js}<\\/script><script>${js32}<\\/script><script>${js33}<\\/script></body>`);
   document.open();document.write(html);document.close();
  }catch(e){document.getElementById('loader').innerHTML='<div class="loader-card"><strong>کافه گیم دراگون</strong><span>بارگذاری منو انجام نشد. اتصال به GitHub Pages را بررسی کنید.</span></div>';console.error(e)}
 })();

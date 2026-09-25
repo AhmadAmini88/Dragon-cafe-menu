@@ -20,3 +20,118 @@
 #modalBackdrop #modalPrice .dg-price-unit,#modalBackdrop #modalPrice .dg-price-number{position:static!important;float:none!important;transform:none!important}
 .received-order-summary span,.received-order-summary strong{display:inline-block!important;text-align:center!important}
 @media(max-width:380px){.item-foot>.add-control{width:120px!important;min-width:120px!important;grid-template-columns:34px 44px 34px!important}.item-foot>.add-control .qty-value{width:44px!important;min-width:44px!important}}
+
+/* V34.1 — final main-page quantity + product-detail price alignment */
+.item-card .item-foot > .add-control{
+  display:grid!important;
+  grid-template-columns:36px 46px 36px!important;
+  grid-template-rows:42px!important;
+  align-items:center!important;
+  justify-items:center!important;
+  justify-content:center!important;
+  direction:ltr!important;
+  flex:0 0 126px!important;
+  width:126px!important;
+  min-width:126px!important;
+  max-width:126px!important;
+  height:42px!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+}
+.item-card .item-foot > .add-control > button{
+  grid-row:1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:36px!important;
+  min-width:36px!important;
+  max-width:36px!important;
+  height:36px!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+}
+.item-card .item-foot > .add-control > button:first-child{grid-column:1!important}
+.item-card .item-foot > .add-control > .qty-value{
+  grid-column:2!important;
+  grid-row:1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:46px!important;
+  min-width:46px!important;
+  max-width:46px!important;
+  height:36px!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+  text-align:center!important;
+  direction:ltr!important;
+  unicode-bidi:isolate!important;
+  white-space:nowrap!important;
+  line-height:36px!important;
+  font-variant-numeric:tabular-nums!important;
+}
+.item-card .item-foot > .add-control > button:last-child{grid-column:3!important}
+
+/* Product detail modal: price + currency form one centered group. */
+#modalBackdrop .modal-body .modal-foot{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex-wrap:wrap!important;
+  text-align:center!important;
+}
+#modalBackdrop .modal-body .modal-foot .price-wrap{
+  flex:0 1 auto!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:100%!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  direction:rtl!important;
+  margin-inline:auto!important;
+}
+#modalBackdrop .modal-body .modal-foot .price-wrap .price,
+#modalBackdrop .modal-body .modal-foot .price-wrap .old-price{
+  width:auto!important;
+  max-width:100%!important;
+  text-align:center!important;
+  margin-inline:auto!important;
+}
+#modalBackdrop .modal-body .modal-foot .price-wrap .price{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  gap:7px!important;
+  direction:rtl!important;
+  white-space:nowrap!important;
+}
+#modalBackdrop .modal-body .modal-foot .price-wrap .price .unit{
+  display:inline!important;
+  width:auto!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+@media(max-width:380px){
+  .item-card .item-foot > .add-control{
+    flex-basis:120px!important;
+    width:120px!important;
+    min-width:120px!important;
+    max-width:120px!important;
+    grid-template-columns:34px 44px 34px!important;
+  }
+  .item-card .item-foot > .add-control > button{
+    width:34px!important;
+    min-width:34px!important;
+    max-width:34px!important;
+  }
+  .item-card .item-foot > .add-control > .qty-value{
+    width:44px!important;
+    min-width:44px!important;
+    max-width:44px!important;
+  }
+}

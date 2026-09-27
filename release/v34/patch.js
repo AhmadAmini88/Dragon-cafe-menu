@@ -7,3 +7,49 @@ window.changeReceivedOrderQty=function(id,index,delta){const os=getOrdersSafe(),
 window.cancelReceivedOrder=function(id){const os=getOrdersSafe(),o=os.find(x=>String(x.id)===String(id));if(!o)return;if(o.status==='cancelled'){window.showToast?.('این سفارش قبلاً لغو شده است.');return}if(!confirm('سفارش '+id+' لغو شود؟'))return;o.status='cancelled';o.cancelledAt=new Date().toISOString();persist(o,'لغو سفارش توسط مدیر');window.closeReceivedEditOverlay();window.openOrderManager?.();window.showToast?.('سفارش '+id+' لغو شد')};
 function enhanceOrders(){const list=q('#orderManagerList');if(!list)return;qa('.admin-order-card',list).forEach(card=>{const idEl=q('.order-number-row-v19 strong',card);const id=idEl?.textContent?.trim();if(!id)return;const order=getOrdersSafe().find(o=>String(o.id)===String(id));if(!order)return;const total=(order.items||[]).reduce((s,i)=>s+Math.max(0,Number(i.qty)||0),0);const sum=q('.received-order-summary strong',card);if(sum)sum.textContent='تعداد - '+fa(total)+' عدد';qa('.received-order-qty',card).forEach((el,idx)=>{const it=order.items?.[idx];if(it)el.textContent='تعداد - '+fa(it.qty)+' عدد'});let actions=q('.received-order-admin-actions',card);if(!actions){actions=document.createElement('div');actions.className='order-actions received-order-admin-actions';actions.innerHTML='<button type="button" onclick="advanceOrder(\\''+escx(id)+'\\')">تغییر وضعیت</button><button type="button" onclick="editReceivedOrder(\\''+escx(id)+'\\')">ویرایش سفارش</button><button type="button" class="danger-order-btn" onclick="cancelReceivedOrder(\\''+escx(id)+'\\')">لغو سفارش</button>';card.appendChild(actions)}})}
 const observer=new MutationObserver(enhanceOrders);function boot(){const list=q('#orderManagerList');if(list)observer.observe(list,{childList:true,subtree:true});enhanceOrders()}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();})();
+
+/* V34.2 JS hardening — normalize modal price into two real flex items.
+   This prevents the currency span from being split away by RTL/legacy CSS. */
+(function(){
+  'use strict';
+  function normalizeModalPrice(){
+    const el=document.getElementById('modalPrice');
+    if(!el || el.dataset.dgNormalized==='1') return;
+    const unit=el.querySelector('.unit');
+    if(!unit) return;
+    const numberText=Array.from(el.childNodes)
+      .filter(n=>n.nodeType===Node.TEXT_NODE)
+      .map(n=>n.textContent)
+      .join(' ')
+      .replace(/\s+/g,' ')
+      .trim();
+    const unitText=unit.textContent.trim();
+    if(!numberText || !unitText) return;
+    el.innerHTML='<span class="dg-price-number"></span><span class="dg-price-unit"></span>';
+    el.querySelector('.dg-price-number').textContent=numberText;
+    el.querySelector('.dg-price-unit').textContent=unitText;
+    el.dataset.dgNormalized='1';
+  }
+  function watchModalPrice(){
+    const el=document.getElementById('modalPrice');
+    if(!el || el.dataset.dgObserver==='1') return;
+    el.dataset.dgObserver='1';
+    const mo=new MutationObserver(function(){
+      el.dataset.dgNormalized='';
+      normalizeModalPrice();
+    });
+    mo.observe(el,{childList:true,subtree:true,characterData:true});
+    normalizeModalPrice();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',watchModalPrice);
+  else watchModalPrice();
+  document.addEventListener('click',function(e){
+    if(e.target.closest('.item-card,.product-card,.modal-close,[data-card-inc],[data-card-dec]')){
+      setTimeout(function(){
+        const el=document.getElementById('modalPrice');
+        if(el) el.dataset.dgNormalized='';
+        normalizeModalPrice();
+      },0);
+    }
+  },true);
+})();

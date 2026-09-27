@@ -135,3 +135,112 @@
     max-width:44px!important;
   }
 }
+
+
+/* V34.2 — quantity counter is a fixed three-cell control; digits can never move the +/- buttons */
+.item-card .item-foot > .add-control{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:38px minmax(54px,54px) 38px!important;
+  grid-template-rows:40px!important;
+  gap:0!important;
+  width:130px!important;
+  min-width:130px!important;
+  max-width:130px!important;
+  height:40px!important;
+  flex:0 0 130px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  justify-items:center!important;
+  padding:0!important;
+  margin-inline:auto!important;
+  direction:ltr!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+}
+.item-card .item-foot > .add-control > button,
+.item-card .item-foot > .add-control > .qty-value{
+  position:relative!important;
+  inset:auto!important;
+  transform:none!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+.item-card .item-foot > .add-control > button{
+  width:36px!important;
+  min-width:36px!important;
+  max-width:36px!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.item-card .item-foot > .add-control > button:first-child{grid-column:1!important;grid-row:1!important}
+.item-card .item-foot > .add-control > button:last-child{grid-column:3!important;grid-row:1!important}
+.item-card .item-foot > .add-control > .qty-value{
+  grid-column:2!important;
+  grid-row:1!important;
+  width:54px!important;
+  min-width:54px!important;
+  max-width:54px!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  line-height:36px!important;
+  direction:ltr!important;
+  unicode-bidi:isolate!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  font-variant-numeric:tabular-nums!important;
+  font-feature-settings:"tnum"!important;
+}
+.item-card .item-foot > .add-control > .qty-value,
+.item-card .item-foot > .add-control > .qty-value *{
+  text-align:center!important;
+}
+#modalBackdrop .modal-body .modal-foot .price-wrap .price{
+  display:flex!important;
+  flex:0 0 auto!important;
+  width:max-content!important;
+  min-width:max-content!important;
+  max-width:calc(100vw - 40px)!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  gap:7px!important;
+  margin-inline:auto!important;
+  padding:0!important;
+  direction:rtl!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+#modalBackdrop .modal-body .modal-foot .price-wrap .price .dg-price-number,
+#modalBackdrop .modal-body .modal-foot .price-wrap .price .dg-price-unit{
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:max-content!important;
+  max-width:none!important;
+  position:static!important;
+  float:none!important;
+  transform:none!important;
+  margin:0!important;
+  padding:0!important;
+  white-space:nowrap!important;
+  line-height:1.4!important;
+}
+#modalBackdrop .modal-body .modal-foot .price-wrap .price .dg-price-number{direction:ltr!important;text-align:center!important}
+#modalBackdrop .modal-body .modal-foot .price-wrap .price .dg-price-unit{direction:rtl!important;text-align:center!important}
+@media(max-width:380px){
+  .item-card .item-foot > .add-control{width:124px!important;min-width:124px!important;max-width:124px!important;flex-basis:124px!important;grid-template-columns:36px 52px 36px!important}
+  .item-card .item-foot > .add-control > .qty-value{width:52px!important;min-width:52px!important;max-width:52px!important}
+}
